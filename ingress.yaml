@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: app-ingress
+  namespace: app
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+  labels:
+    app: wordpress
+    tier: frontend
+spec:
+  rules:
+  - host: app.karimlabs.com
+    http:
+      paths:
+      - backend:
+          serviceName: app-svc
+          servicePort: 80
