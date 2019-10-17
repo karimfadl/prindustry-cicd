@@ -30,6 +30,8 @@ spec:
     metadata:
       labels:
         app: wordpress
+      annotations:
+        backup.velero.io/backup-volumes: "app-storage"
     spec:
       containers:
       - name: app
