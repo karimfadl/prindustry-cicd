@@ -29,7 +29,7 @@ define( 'DB_USER', 'devapp');
 define( 'DB_PASSWORD', 'devapp');
 
 /** MySQL hostname */
-define( 'DB_HOST', 'k8s-dev-db-mysql-do-user-4647325-0.db.ondigitalocean.com');
+define( 'DB_HOST', 'k8s-dev-db-mysql-do-user-4647325-0.db.ondigitalocean.com:25060');
 
 /** Database Charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8');

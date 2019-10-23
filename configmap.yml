@@ -4,6 +4,6 @@ metadata:
   name: devapp-configmap
   namespace: devapp
 data:
-  wp_host: k8s-dev-db-mysql-do-user-4647325-0.db.ondigitalocean.com
+  wp_host: k8s-dev-db-mysql-do-user-4647325-0.db.ondigitalocean.com:25060
   wp_database: devapp
   wp_user: devapp
