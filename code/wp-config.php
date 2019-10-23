@@ -20,16 +20,16 @@
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define( 'DB_NAME', 'app');
+define( 'DB_NAME', 'devapp');
 
 /** MySQL database username */
-define( 'DB_USER', 'app');
+define( 'DB_USER', 'devapp');
 
 /** MySQL database password */
-define( 'DB_PASSWORD', 'password');
+define( 'DB_PASSWORD', 'devapp');
 
 /** MySQL hostname */
-define( 'DB_HOST', 'db-app-svc');
+define( 'DB_HOST', 'k8s-dev-db-mysql-do-user-4647325-0.db.ondigitalocean.com');
 
 /** Database Charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8');

@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: devapp-ingress
+  namespace: devapp
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: devapp.karimlabs.com
+    http:
+      paths:
+      - backend:
+          serviceName: devapp-svc
+          servicePort: 80

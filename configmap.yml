@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: app-configmap
-  namespace: app
+  name: devapp-configmap
+  namespace: devapp
 data:
-  wp_host: db-app-svc
-  wp_database: app
-  wp_user: app
+  wp_host: k8s-dev-db-mysql-do-user-4647325-0.db.ondigitalocean.com
+  wp_database: devapp
+  wp_user: devapp

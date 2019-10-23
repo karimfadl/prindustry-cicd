@@ -12,7 +12,7 @@ pipeline {
                 script {
                     app = docker.build(DOCKER_IMAGE_NAME)
                     app.inside {
-                        sh 'echo Hello, Wordpress!'
+                        sh 'echo Hello, DevApp Wordpress!'
                     }
                 }
             }
