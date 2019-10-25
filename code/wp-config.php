@@ -85,6 +85,12 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROT
 	$_SERVER['HTTPS'] = 'on';
 }
 
+define( 'AS3CF_SETTINGS', serialize( array(
+    'provider' => 'do',
+    'access-key-id' => 'PY55JVYVGOQRCP3XNE2B',
+    'secret-access-key' => 'sfuxGRr8jCaa1j1nQ7aFuhsxK58g7+Xd7fmu51dUk8o',
+) ) );
+
 /* That's all, stop editing! Happy publishing. */
 
 /** Absolute path to the WordPress directory. */
