@@ -31,9 +31,6 @@ spec:
       labels:
         app: devapp-wordpress
     spec:
-      securityContext:
-        runAsUser: 33
-        runAsGroup: 33
       containers:
       - name: devapp-wp
         image: $DOCKER_IMAGE_NAME:$BUILD_NUMBER
@@ -61,3 +58,7 @@ spec:
         ports:
         - containerPort: 80
           name: devapp-port
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "chown -R www-data:www-data /var/www/html"]
