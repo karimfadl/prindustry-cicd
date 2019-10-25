@@ -31,6 +31,9 @@ spec:
       labels:
         app: devapp-wordpress
     spec:
+      securityContext:
+        runAsUser: 33
+        runAsGroup: 33
       containers:
       - name: devapp-wp
         image: $DOCKER_IMAGE_NAME:$BUILD_NUMBER
