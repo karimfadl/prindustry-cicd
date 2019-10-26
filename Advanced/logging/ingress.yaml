@@ -2,20 +2,14 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: kibana-ingress
-  namespace: kube-system
+  namespace: kube-logging
   annotations:
-    kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/scheme: internet-facing
-  labels:
-    k8s-app: kibana-logging
-    kubernetes.io/cluster-service: "true"
-    addonmanager.kubernetes.io/mode: Reconcile
-    kubernetes.io/name: "Kibana"
+    kubernetes.io/ingress.class: nginx
 spec:
   rules:
-  - host: kibana.karimlabs.com
+  - host: logging.karimlabs.com
     http:
       paths:
       - backend:
-          serviceName: kibana-logging
+          serviceName: kibana
           servicePort: 5601
