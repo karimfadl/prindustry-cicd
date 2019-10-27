@@ -7,9 +7,11 @@ metadata:
     app: kibana
 spec:
   ports:
-  - port: 5601
+  - port: 80
+    targetPort: 5601
   selector:
     app: kibana
+  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment
