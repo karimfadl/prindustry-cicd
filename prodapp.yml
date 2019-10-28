@@ -1,0 +1,64 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: prodapp-svc
+  namespace: prodapp
+  labels:
+    app: prodapp-wordpress
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+  selector:
+    app: prodapp-wordpress
+  type: NodePort
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: prodapp-deployment
+  namespace: prodapp
+  labels:
+    app: prodapp-wordpress
+spec:
+  selector:
+    matchLabels:
+      app: prodapp-wordpress
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: prodapp-wordpress
+    spec:
+      containers:
+      - name: prodapp-wp
+        image: $DOCKER_IMAGE_NAME:$BUILD_NUMBER
+        env:
+        - name: WORDPRESS_DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: prodapp-configmap
+              key: wp_host
+        - name: WORDPRESS_DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: prodapp-configmap
+              key: wp_database
+        - name: WORDPRESS_DB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: prodapp-configmap
+              key: wp_user
+        - name: WORDPRESS_DB_PASSWORD
+          valueFrom:
+             secretKeyRef:
+               name: database-password
+               key: database_password
+        ports:
+        - containerPort: 80
+          name: prodapp-port
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "chown -R www-data:www-data /var/www/html"]
