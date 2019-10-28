@@ -40,7 +40,6 @@ pipeline {
                 branch 'development'
             }
             steps {
-                input 'Deploy to development?'
                 kubernetesDeploy(
                     kubeconfigId: 'kubeconfig',
                     configs: 'devapp.yml',
