@@ -3,10 +3,11 @@ pipeline {
     environment {
         DOCKER_IMAGE_NAME = "prindustry/wordpress"
     }
+
     stages {
         stage('Build Docker Image') {
             when {
-                branch 'master'
+                branch 'development'
             }
             steps {
                 script {
@@ -17,9 +18,11 @@ pipeline {
                 }
             }
         }
+
+
         stage('Push Docker Image') {
             when {
-                branch 'master'
+                branch 'development'
             }
             steps {
                 script {
@@ -28,6 +31,21 @@ pipeline {
                         app.push("latest")
                     }
                 }
+            }
+        }
+
+
+        stage('DeployToDevelopment') {
+            when {
+                branch 'development'
+            }
+            steps {
+                input 'Deploy to development?'
+                kubernetesDeploy(
+                    kubeconfigId: 'kubeconfig',
+                    configs: 'devapp.yml',
+                    enableConfigSubstitution: true
+                )
             }
         }
 
