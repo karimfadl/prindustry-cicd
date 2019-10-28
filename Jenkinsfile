@@ -37,7 +37,7 @@ pipeline {
 
         stage('DeployToDevelopment') {
             when {
-                branch 'development'
+                branch 'master'
             }
             steps {
                 kubernetesDeploy(
@@ -50,7 +50,7 @@ pipeline {
 
         stage('DeployToProduction') {
             when {
-                branch 'production'
+                branch 'master'
             }
             steps {
                 input 'Deploy to Production?'
