@@ -2,7 +2,27 @@ pipeline {
     agent any
     environment {
         DOCKER_IMAGE_NAME = "prindustry/wordpress"
+        // Slack configuration
+        SLACK_COLOR_DANGER  = '#E01563'
+        SLACK_COLOR_INFO    = '#6ECADC'
+        SLACK_COLOR_WARNING = '#FFC300'
+        SLACK_COLOR_GOOD    = '#3EB991'
     }
+
+    options {
+
+      disableConcurrentBuilds()
+      timeout(time: 10, unit: 'MINUTES')
+      buildDiscarder(logRotator(numToKeepStr: '10'))
+
+    } // options
+
+    parameters {
+
+      string(name: 'SLACK_CHANNEL',
+           description: 'Default Slack channel to send messages to',
+           defaultValue: '#cicd-app')
+    } // parameters
 
     stages {
         stage('Build Docker Image') {
@@ -63,4 +83,32 @@ pipeline {
             }
         }
     }
+
+    post {
+
+      aborted {
+
+        echo "Sending message to Slack"
+        slackSend (color: "${env.SLACK_COLOR_WARNING}",
+                   channel: "${params.SLACK_CHANNEL}",
+                   message: "*ABORTED:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} by ${env.USER_ID}\n More info at: ${env.BUILD_URL}")
+      } // aborted
+
+      failure {
+
+        echo "Sending message to Slack"
+        slackSend (color: "${env.SLACK_COLOR_DANGER}",
+                 channel: "${params.SLACK_CHANNEL}",
+                 message: "*FAILED:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} by ${env.USER_ID}\n More info at: ${env.BUILD_URL}")
+      } // failure
+
+      success {
+        echo "Sending message to Slack"
+        slackSend (color: "${env.SLACK_COLOR_GOOD}",
+                 channel: "${params.SLACK_CHANNEL}",
+                 message: "*SUCCESS:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} by ${env.USER_ID}\n More info at: ${env.BUILD_URL}")
+      } // success
+
+  } // post
+
 }
