@@ -2,6 +2,11 @@ pipeline {
     agent any
     environment {
         DOCKER_IMAGE_NAME = "prindustry/wordpress"
+        // Slack configuration
+        SLACK_COLOR_DANGER  = '#E01563'
+        SLACK_COLOR_INFO    = '#6ECADC'
+        SLACK_COLOR_WARNING = '#FFC300'
+        SLACK_COLOR_GOOD    = '#3EB991'
     }
 
     options {
@@ -19,15 +24,6 @@ pipeline {
            defaultValue: '#cicd-app')
     } // parameters
 
-    environment {
-
-      // Slack configuration
-      SLACK_COLOR_DANGER  = '#E01563'
-      SLACK_COLOR_INFO    = '#6ECADC'
-      SLACK_COLOR_WARNING = '#FFC300'
-      SLACK_COLOR_GOOD    = '#3EB991'
-
-    } // environment
 
     stages {
         stage('Build Docker Image') {
