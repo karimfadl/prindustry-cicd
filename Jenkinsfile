@@ -49,7 +49,7 @@ pipeline {
         }
 
 
-    post{ 
+    post { 
         always { 
             slackSend (color: colorCode, message: summary)
            }
