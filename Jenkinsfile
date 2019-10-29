@@ -1,13 +1,33 @@
-def COLOR_MAP = ['SUCCESS': 'good', 'FAILURE': 'danger', 'UNSTABLE': 'danger', 'ABORTED': 'danger']
-def getBuildUser() {
-    return currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId()
-}
-
 pipeline {
     agent any
     environment {
         DOCKER_IMAGE_NAME = "prindustry/wordpress"
     }
+
+    options {
+
+      disableConcurrentBuilds()
+      timeout(time: 10, unit: 'MINUTES')
+      buildDiscarder(logRotator(numToKeepStr: '10'))
+
+    } // options
+
+    parameters {
+
+      string(name: 'SLACK_CHANNEL',
+           description: 'Default Slack channel to send messages to',
+           defaultValue: '#cicd-app')
+    } // parameters
+
+    environment {
+
+      // Slack configuration
+      SLACK_COLOR_DANGER  = '#E01563'
+      SLACK_COLOR_INFO    = '#6ECADC'
+      SLACK_COLOR_WARNING = '#FFC300'
+      SLACK_COLOR_GOOD    = '#3EB991'
+
+    } // environment
 
     stages {
         stage('Build Docker Image') {
@@ -54,18 +74,31 @@ pipeline {
         }
     }
 
-	post {
-        always {
-            script {
-                BUILD_USER = getBuildUser()
-            }
-            echo 'I will always say Hello again!'
-            
-            slackSend channel: '#jenkins',
-                color: COLOR_MAP[currentBuild.currentResult],
-                message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} by ${BUILD_USER}\n More info at: ${env.BUILD_URL}"
-            
-        }
-    }
+    post {
+
+      aborted {
+
+        echo "Sending message to Slack"
+        slackSend (color: "${env.SLACK_COLOR_WARNING}",
+                   channel: "${params.SLACK_CHANNEL}",
+                   message: "*ABORTED:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} by ${env.USER_ID}\n More info at: ${env.BUILD_URL}")
+      } // aborted
+
+      failure {
+
+        echo "Sending message to Slack"
+        slackSend (color: "${env.SLACK_COLOR_DANGER}",
+                 channel: "${params.SLACK_CHANNEL}",
+                 message: "*FAILED:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} by ${env.USER_ID}\n More info at: ${env.BUILD_URL}")
+      } // failure
+
+      success {
+        echo "Sending message to Slack"
+        slackSend (color: "${env.SLACK_COLOR_GOOD}",
+                 channel: "${params.SLACK_CHANNEL}",
+                 message: "*SUCCESS:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} by ${env.USER_ID}\n More info at: ${env.BUILD_URL}")
+      } // success
+
+  } // post
 
 }
