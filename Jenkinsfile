@@ -48,5 +48,9 @@ pipeline {
             }
         }
 
+    post { 
+        always { 
+            slackSend (color: colorCode, message: summary)
+        }
     }
 }
