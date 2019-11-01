@@ -20,13 +20,13 @@
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define( 'DB_NAME', 'devapp');
+define( 'DB_NAME', 'prodapp');
 
 /** MySQL database username */
-define( 'DB_USER', 'devapp');
+define( 'DB_USER', 'prodapp');
 
 /** MySQL database password */
-define( 'DB_PASSWORD', 'devapp');
+define( 'DB_PASSWORD', 'prodapp');
 
 /** MySQL hostname */
 define( 'DB_HOST', 'k8s-dev-db-mysql-do-user-4647325-0.db.ondigitalocean.com:25060');
