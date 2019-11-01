@@ -1,7 +1,12 @@
 node {
-  wrap([$class: 'BuildUser']) {
-    def user = env.BUILD_USER_ID
-  }
+    def BUILD_FULL = sh (
+        script: 'curl --silent '+buildURL+' | tr "{}" "\\n" | grep -Po \'"shortDescription":.*?[^\\\\]"\' | cut -d ":" -f2',
+        returnStdout: true
+        )
+
+    slackSend channel: '#cicd-app',
+          color: '#000000',
+          message: "The pipeline was ${BUILD_FULL}  ${GIT_COMMIT_MSG} "
 }
 
 pipeline {
@@ -98,7 +103,7 @@ pipeline {
         echo "Sending message to Slack"
         slackSend (color: "${env.SLACK_COLOR_GOOD}",
                  channel: "${params.SLACK_CHANNEL}",
-                 message: "*SUCCESS:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} by ${env.BUILD_USER}\n More info at: ${env.BUILD_URL}")
+                 message: "*SUCCESS:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} by ${env.USER_ID}\n More info at: ${env.BUILD_URL}")
       } // success
 
   } // post
