@@ -92,7 +92,7 @@ pipeline {
         echo "Sending message to Slack"
         slackSend (color: "${env.SLACK_COLOR_GOOD}",
                  channel: "${params.SLACK_CHANNEL}",
-                 message: "*SUCCESS:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} by ${env.USER_ID}\n More info at: ${env.BUILD_URL}")
+                 message: "*SUCCESS:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} by ${env.BUILD_USER}\n More info at: ${env.BUILD_URL}")
       } // success
 
   } // post
