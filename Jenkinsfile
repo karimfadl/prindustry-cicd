@@ -58,15 +58,6 @@ pipeline {
             steps {
                 input 'Deploy to Production?'
                 milestone(1)
-		post {
-      			aborted {
-        		echo "Sending message to Slack"
-        		slackSend (color: "${env.SLACK_COLOR_WARNING}",
-                   	channel: "${params.SLACK_CHANNEL}",
-                   	message: "*ABORTED:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} by ${env.USER_ID}\n More info at: ${env.BUILD_URL}")
-      		} // aborted
-		
-		}
                 kubernetesDeploy(
                     kubeconfigId: 'kubeconfig',
                     configs: 'prodapp.yml',
