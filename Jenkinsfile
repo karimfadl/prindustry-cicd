@@ -1,14 +1,3 @@
-node {
-    def BUILD_FULL = sh (
-        script: 'curl --silent '+buildURL+' | tr "{}" "\\n" | grep -Po \'"shortDescription":.*?[^\\\\]"\' | cut -d ":" -f2',
-        returnStdout: true
-        )
-
-    slackSend channel: '#cicd-app',
-          color: '#000000',
-          message: "The pipeline was ${BUILD_FULL}  ${GIT_COMMIT_MSG} "
-}
-
 pipeline {
     agent any
     environment {
